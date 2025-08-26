@@ -1,17 +1,40 @@
+import EmailInput from '@/components/EmailInput';
 import FixedBottomCTA from '@/components/FixedBottomCTA';
-import InptuField from '@/components/InptuField';
+import PasswordInput from '@/components/PasswordInput';
+import { colors } from '@/constants';
 import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 
+type FormValues = {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+};
+
 function LoginScreen() {
+  const loginForm = useForm<FormValues>({
+    defaultValues: {
+      email: '',
+      password: '',
+      passwordConfirm: '',
+    },
+  });
+
+  const onsubmit = (data: FormValues) => {
+    console.log(data);
+  };
   return (
-    <>
+    <FormProvider {...loginForm}>
       <View style={styles.container}>
-        <InptuField label='이메일' placeholder='이메일을 입력해주세요.' />
-        <InptuField label='비밀번호' placeholder='비밀번호를 입력해주세요.' />
+        <EmailInput />
+        <PasswordInput />
       </View>
-      <FixedBottomCTA label='로그인' onPress={() => {}} />
-    </>
+      <FixedBottomCTA
+        label='가입하기'
+        onPress={loginForm.handleSubmit(onsubmit)}
+      />
+    </FormProvider>
   );
 }
 
@@ -20,6 +43,15 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 16,
     gap: 16,
+  },
+  fixed: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.GRAY_300,
+    paddingTop: 12,
+    paddingHorizontal: 16,
   },
 });
 
