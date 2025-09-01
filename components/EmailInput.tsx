@@ -3,7 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import InptuField from './InptuField';
 
 function EmailInput() {
-  const { control } = useFormContext();
+  const { control, setFocus } = useFormContext();
   return (
     <Controller
       name='email'
@@ -20,8 +20,13 @@ function EmailInput() {
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <InptuField
+          autoFocus
           label='이메일'
           placeholder='이메일을 입력해주세요.'
+          inputMode='email'
+          submitBehavior='submit'
+          returnKeyType='next'
+          onSubmitEditing={() => setFocus('password')}
           value={value}
           onChangeText={onChange}
           error={error?.message}

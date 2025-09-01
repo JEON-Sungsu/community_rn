@@ -3,6 +3,7 @@ import FixedBottomCTA from '@/components/FixedBottomCTA';
 import PasswordConfirmInput from '@/components/PasswordConfirmInput';
 import PasswordInput from '@/components/PasswordInput';
 import { colors } from '@/constants';
+import useAuth from '@/hooks/queries/useAuth';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
@@ -13,6 +14,7 @@ type FormValues = {
 };
 
 function SignupScreen() {
+  const { signupMutation } = useAuth();
   const signupForm = useForm<FormValues>({
     defaultValues: {
       email: '',
@@ -21,14 +23,14 @@ function SignupScreen() {
   });
 
   const onsubmit = (data: FormValues) => {
-    console.log(data);
+    signupMutation.mutate({ email: data.email, password: data.password });
   };
 
   return (
     <FormProvider {...signupForm}>
       <View style={styles.container}>
         <EmailInput />
-        <PasswordInput />
+        <PasswordInput submitBehavior='submit' />
         <PasswordConfirmInput />
       </View>
       <FixedBottomCTA
