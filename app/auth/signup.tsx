@@ -23,6 +23,7 @@ function SignupScreen() {
   });
 
   const onsubmit = (data: FormValues) => {
+    console.log('onsubmit', data);
     signupMutation.mutate({ email: data.email, password: data.password });
   };
 

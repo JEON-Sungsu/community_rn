@@ -32,7 +32,9 @@ function useLogin() {
 
       router.replace('/');
     },
-    onError: () => {},
+    onError: (e) => {
+      console.log('signup error', e);
+    },
   });
 }
 
@@ -40,9 +42,12 @@ function useSignup() {
   return useMutation({
     mutationFn: postSignup,
     onSuccess: () => {
+      console.log('signup success');
       router.replace('/auth/login');
     },
-    onError: () => {},
+    onError: (e) => {
+      console.log('signup error', e);
+    },
   });
 }
 
@@ -51,7 +56,19 @@ function useAuth() {
   const loginMutation = useLogin();
   const signupMutation = useSignup();
 
-  return { auth: { id: data?.id || '' }, loginMutation, signupMutation };
+  const logout = () => {
+    removeHeader('Authorization');
+    deleteSecureStore('accessToken');
+    queryClient.resetQueries({ queryKey: ['auth'] });
+    router.replace('/auth/login');
+  };
+
+  return {
+    auth: { id: data?.id || '' },
+    loginMutation,
+    signupMutation,
+    logout,
+  };
 }
 
 export default useAuth;

@@ -14,7 +14,7 @@ async function postSignup(body: RequestUser): Promise<void> {
 }
 
 async function postLogin(body: RequestUser): Promise<{ accessToken: string }> {
-  const data = await axiosInstance.post('/auth/sginin', body);
+  const data = await axiosInstance.post('/auth/signin', body);
 
   return data.data;
 }

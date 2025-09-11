@@ -25,6 +25,7 @@ function LoginScreen() {
   });
 
   const onsubmit = (data: FormValues) => {
+    console.log('onsubmit', data);
     loginMutation.mutate({ email: data.email, password: data.password });
   };
   return (
@@ -34,7 +35,7 @@ function LoginScreen() {
         <PasswordInput />
       </View>
       <FixedBottomCTA
-        label='가입하기'
+        label='로그인'
         onPress={loginForm.handleSubmit(onsubmit)}
       />
     </FormProvider>
