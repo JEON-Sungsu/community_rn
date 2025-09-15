@@ -26,6 +26,7 @@ function InptuField(
           styles.container,
           styles[variant],
           Boolean(error) && styles.inputError,
+          props.multiline && styles.multiline,
         ]}
       >
         <TextInput
@@ -73,6 +74,11 @@ const styles = StyleSheet.create({
   },
   inputError: {
     backgroundColor: colors.RED_100,
+  },
+  multiline: {
+    alignItems: 'flex-start',
+    height: 200,
+    paddingVertical: 10,
   },
 });
 

@@ -14,6 +14,7 @@ interface Profile extends User {
   faceId: string;
   bottomId: string;
   background: string;
+  nickname: string;
 }
 
 interface ImageUri {

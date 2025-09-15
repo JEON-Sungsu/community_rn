@@ -38,6 +38,23 @@ const dummyData = [
     commentCount: 2,
     viewCount: 2,
   },
+  {
+    id: 3,
+    userId: 3,
+    title: '더미 제목 입니다.',
+    description: '더미 내용 입니다.',
+    createdAt: '2023-01-01T00:00:00.000Z',
+    author: {
+      id: 3,
+      nickname: '더미 닉네임',
+    },
+    imageUris: [],
+    likes: [],
+    hasVote: false,
+    voteCount: 2,
+    commentCount: 2,
+    viewCount: 2,
+  },
 ];
 
 function FeedList() {
