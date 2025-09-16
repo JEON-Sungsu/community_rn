@@ -14,3 +14,10 @@ export const colors = {
   GRAY_700: '#374151',
   BLACK: '#000000',
 };
+
+export const queryKeys = {
+  AUTH: 'auth',
+  GET_ME: 'getMe',
+  POST: 'post',
+  GET_POSTS: 'getPosts',
+};

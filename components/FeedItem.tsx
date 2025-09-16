@@ -1,4 +1,5 @@
 import { colors } from '@/constants';
+import useAuth from '@/hooks/queries/useAuth';
 import { Post } from '@/types';
 import { Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import React from 'react';
@@ -10,8 +11,9 @@ interface FeedItemProps {
 }
 
 function FeedItem({ post }: FeedItemProps) {
-  const isLiked = false;
-
+  const { auth } = useAuth();
+  const likeUsers = post.likes?.map((like) => like.userId);
+  const isLiked = likeUsers?.includes(Number(auth.id));
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -34,7 +36,7 @@ function FeedItem({ post }: FeedItemProps) {
             color={isLiked ? colors.ORANGE_600 : colors.BLACK}
           />
           <Text style={isLiked ? styles.activeMenuText : styles.menuText}>
-            1
+            {post.likes?.length || '좋아요'}
           </Text>
         </Pressable>
         <Pressable style={styles.menu}>
@@ -44,13 +46,13 @@ function FeedItem({ post }: FeedItemProps) {
             color={colors.BLACK}
           />
           <Text style={isLiked ? styles.activeMenuText : styles.menuText}>
-            1
+            {post.commentCount || '댓글'}
           </Text>
         </Pressable>
         <Pressable style={styles.menu}>
           <Ionicons name='eye-outline' size={16} color={colors.BLACK} />
           <Text style={isLiked ? styles.activeMenuText : styles.menuText}>
-            1
+            {post.viewCount}
           </Text>
         </Pressable>
       </View>
