@@ -1,7 +1,10 @@
 import { colors } from '@/constants';
 import useAuth from '@/hooks/queries/useAuth';
+import useDeletePost from '@/hooks/queries/useDeletePost';
 import { Post } from '@/types';
+import { useActionSheet } from '@expo/react-native-action-sheet';
 import { Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Profile from './Profile';
@@ -12,8 +15,36 @@ interface FeedItemProps {
 
 function FeedItem({ post }: FeedItemProps) {
   const { auth } = useAuth();
+  const router = useRouter();
   const likeUsers = post.likes?.map((like) => like.userId);
   const isLiked = likeUsers?.includes(Number(auth.id));
+  const { showActionSheetWithOptions } = useActionSheet();
+  const deletePost = useDeletePost();
+
+  const handlePressOption = () => {
+    const options = ['삭제', '수정', '취소'];
+    const cancelButtonIndex = 2;
+    const destructiveButtonIndex = 0;
+
+    showActionSheetWithOptions(
+      { options, cancelButtonIndex, destructiveButtonIndex },
+      (selectedInedx?: number) => {
+        switch (selectedInedx) {
+          case destructiveButtonIndex:
+            deletePost.mutate(post.id);
+            break;
+          case 1:
+            router.push(`/post/update/${post.id}`);
+            break;
+          case cancelButtonIndex:
+            break;
+          default:
+            break;
+        }
+      }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -22,6 +53,16 @@ function FeedItem({ post }: FeedItemProps) {
           nickname={post.author.nickname}
           createdAt={post.createdAt}
           onPress={() => {}}
+          option={
+            auth.id === post.author.id && (
+              <Ionicons
+                name='ellipsis-vertical'
+                size={24}
+                color={colors.BLACK}
+                onPress={handlePressOption}
+              />
+            )
+          }
         />
         <Text style={styles.title}>{post.title}</Text>
         <Text numberOfLines={3} style={styles.description}>
