@@ -25,4 +25,15 @@ async function getPost(id = 1): Promise<Post> {
   return data;
 }
 
-export { createPost, deletePost, getPost, getPosts };
+type RequestUpdatePost = {
+  id: number;
+  body: Partial<CreatePostDto>;
+};
+
+async function updatePost({ id, body }: RequestUpdatePost): Promise<number> {
+  const { data } = await axiosInstance.patch(`/posts/${id}`, body);
+
+  return data;
+}
+
+export { createPost, deletePost, getPost, getPosts, updatePost };

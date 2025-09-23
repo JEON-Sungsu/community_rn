@@ -1,8 +1,8 @@
 import CustomButton from '@/components/CustomButton';
 import DescriptionInput from '@/components/DescriptionInput';
 import TitleInput from '@/components/TitleInput';
-import useCreatePost from '@/hooks/queries/useCreatePost';
 import { useGetPost } from '@/hooks/queries/useGetPost';
+import useUpdatePost from '@/hooks/queries/useUpdatePost';
 import { ImageUri } from '@/types';
 import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { useEffect } from 'react';
@@ -19,18 +19,26 @@ type FormValues = {
 export default function PostUpdateScreen() {
   const { id } = useLocalSearchParams();
   const { data: post } = useGetPost(Number(id));
-  const createPost = useCreatePost();
+  const updatePost = useUpdatePost();
+
   const navigation = useNavigation();
   const postForm = useForm<FormValues>({
     defaultValues: {
-      title: post?.title || '',
-      description: post?.description || '',
-      imageUris: post?.imageUris || [],
+      title: post?.title,
+      description: post?.description,
+      imageUris: post?.imageUris,
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    createPost.mutate(data);
+    updatePost.mutate(
+      { id: Number(id), body: data },
+      {
+        onSuccess: () => {
+          navigation.goBack();
+        },
+      }
+    );
   };
 
   useEffect(() => {
